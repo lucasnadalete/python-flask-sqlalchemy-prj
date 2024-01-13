@@ -35,6 +35,7 @@ responses
 safety
 setuptools
 SQLAlchemy
+SQLAlchemy-Utils
 urllib3
 Werkzeug
 wheel
