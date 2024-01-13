@@ -7,8 +7,8 @@ RUN apt-get update && apt-get install -y build-essential
 RUN mkdir -p -m 777 /flaskr
 WORKDIR /flaskr
 
-COPY ./flaskr/. /flaskr
-COPY ./requirements.txt /flaskr
+COPY ../flaskr/. /flaskr
+COPY ../requirements.txt /flaskr
 
 RUN chmod -R 777 ./
 

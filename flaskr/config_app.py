@@ -2,10 +2,10 @@ import os
 
 DEFAULT_USER = 'postgres'
 DEFAULT_PWD = 'postgres'
-DEFAULT_HOST = 'localhost'
+DEFAULT_HOST = 'prj-db'
 DEFAULT_PORT = '5432'
 
-DEFAULT_DATABASE = os.environ.get('DEFAULT_DB_SCHEMA', 'sdb')
+DEFAULT_DATABASE = os.environ.get('DEFAULT_DATABASE', 'sdb')
 
 
 DEFAULT_DB_SCHEMA = os.environ.get('DEFAULT_DB_SCHEMA', 'stemplate')

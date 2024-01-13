@@ -11,9 +11,9 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ${FLASKR_BACK_DEV_DIR}:/flaskr
+      - ${FLASKR_BACK_DEV_DIR:-../flaskr}:/flaskr
     env_file:
-      - .env
+      - ../flaskr/.env
     depends_on:
       - prj-db
     networks:
@@ -29,12 +29,24 @@ services:
       PGDATA: /data/postgres
     restart: always
     env_file:
-      - .env
+      - ../flaskr/.env
     ports:
-      - "${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}"
+      - "${POSTGRES_PORT:-5431}:${POSTGRES_PORT:-5432}"
     volumes:
       - postgres:/data/postgres
       - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - prj-network
+
+  pgadmin-container:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pgadmin@pgadmin.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgadmin"
+    ports:
+      - "16543:80"
+    depends_on:
+      - prj-db
     networks:
       - prj-network
 
