@@ -3,6 +3,7 @@ version: "3"
 services:
   prj-backend-app:
     container_name: prj-backend-app
+    hostname: prj-backend-app
     image: prj-backend-app
     build:
       context: ../
@@ -22,6 +23,7 @@ services:
   prj-db:
     image: postgres:16
     container_name: prj-db
+    hostname: prj-db
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PWD:-postgres}
@@ -44,5 +46,4 @@ volumes:
 networks:
   prj-network:
     driver: bridge
-    external: false
     name: prj-network
