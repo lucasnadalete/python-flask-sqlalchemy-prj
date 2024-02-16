@@ -191,3 +191,20 @@ docker-compose down --remove-orphans
 ## Swagger Documentation UI
 
 Access http://localhost:5000/swagger-ui
+
+## Test Execution
+
+Executing only unit tests from root directory
+```bash
+python -m pytest tests/unit
+```
+
+Executing only functional tests from root directory
+```bash
+python -m pytest tests/functional
+```
+
+Executing **pytest** with coverage analysis to functional and unit tests
+```bash
+python -m pytest --disable-warnings --cov-report term-missing --cov=flaskr tests
+```
