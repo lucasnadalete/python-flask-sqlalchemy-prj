@@ -10,16 +10,20 @@ class UserModel(db_instance.Model):
     username = db_instance.Column(db_instance.String(80))
     password = db_instance.Column(db_instance.String(80))
 
-    def __init__(self, username, password, id=None):
+    def __init__(self, username, password):
         self.username = username
         self.password = password
-    
+
     def __repr__(self):
         return "<UserModel(id={self.id!r}, username={self.username!r})>".format(self=self)
 
     @db_persist
     def save(self):
         db_instance.session.add(self)
+
+    @db_persist
+    def delete(self):
+        db_instance.session.delete(self)
 
     @classmethod
     def find_by_username(cls, username):
@@ -35,5 +39,3 @@ class UserModel(db_instance.Model):
             for count_user in range(1, 6):
                 user = UserModel(username="user" + str(count_user), password="pwd" + str(count_user))
                 user.save()
-
-

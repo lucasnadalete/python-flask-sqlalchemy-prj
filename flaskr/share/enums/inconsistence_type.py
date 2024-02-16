@@ -10,12 +10,10 @@ class InconsistenceType(Enum):
 
     @classmethod
     def get_dict_values(cls):
-        response=[]
+        response = []
         for inconsistence_enum in InconsistenceType:
-            response.append(
-                {
-                    'id':name,
-                    'inconsistence_label':value
-                }
-            )
+            response.append({
+                'id': inconsistence_enum.name,
+                'inconsistence_label': inconsistence_enum.value
+            })
         return sorted(response, key=lambda d: d['id'])

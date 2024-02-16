@@ -17,5 +17,3 @@ class TokenBlocklistModel(db_instance.Model):
     @db_persist
     def save(self):
         db_instance.session.add(self)
-
-

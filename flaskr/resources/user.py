@@ -16,7 +16,7 @@ class UserRegisterResource(MethodResource, Resource):
 
     @marshal_with(UserResponseSchema, code=201)
     @marshal_with(MessageSchema, code=400)
-    @use_kwargs(UserRequestPostSchema, location=('json'))
+    @use_kwargs(UserRequestPostSchema, location='json')
     @doc(description='Register a new user')
     def post(self, **kwargs):
         if UserModel.find_by_username(kwargs['username']):
@@ -27,17 +27,41 @@ class UserRegisterResource(MethodResource, Resource):
 
         return make_response(user_schema.dump(user), 201)
 
-    @use_kwargs(
-    {
+    @use_kwargs({
         'Authorization':
         fields.Str(
             required=True,
             description='Bearer [access_token]'
         )
-    }, location=('headers'))
+    }, location='headers')
+    @marshal_with(UserResponseSchema, code=201)
+    @marshal_with(MessageSchema, code=400)
+    @use_kwargs(UserRequestPostSchema, location='json')
+    @use_kwargs(UserRequestGetSchema, location='query')
+    @doc(description='Update saved user')
+    @jwt_required()
+    def put(self, **kwargs):
+        user_id = kwargs["uid"]
+        saved_user = UserModel.find_by_id(user_id)
+        if not saved_user:
+            return make_response({"message": "User ID not exists"}, 400)
+
+        saved_user.password = kwargs['password']
+        saved_user.username = kwargs['username']
+        saved_user.save()
+
+        return make_response(user_schema.dump(saved_user), 201)
+
+    @use_kwargs({
+        'Authorization':
+        fields.Str(
+            required=True,
+            description='Bearer [access_token]'
+        )
+    }, location='headers')
     @marshal_with(UserResponseSchema, code=201)
     @marshal_with(MessageSchema, code=404)
-    @use_kwargs(UserRequestGetSchema, location=('query'))
+    @use_kwargs(UserRequestGetSchema, location='query')
     @doc(description='Get user by id')
     @jwt_required()
     def get(self, **kwargs):
@@ -46,4 +70,25 @@ class UserRegisterResource(MethodResource, Resource):
         user = UserModel.find_by_id(user_id)
         if user:
             return make_response(user_schema.dump(user), 200)
-        return make_response({'message': 'Item not found'}, 404)
+        return make_response({'message': 'User not found'}, 404)
+
+    @use_kwargs({
+        'Authorization':
+        fields.Str(
+            required=True,
+            description='Bearer [access_token]'
+        )
+    }, location='headers')
+    @marshal_with(MessageSchema, code=201)
+    @marshal_with(MessageSchema, code=404)
+    @use_kwargs(UserRequestGetSchema, location='query')
+    @doc(description='Delete user by id')
+    @jwt_required()
+    def delete(self, **kwargs):
+        user_id = kwargs["uid"]
+
+        user = UserModel.find_by_id(user_id)
+        if user:
+            user.delete()
+            return make_response({'message': 'User deleted'}, 201)
+        return make_response({'message': 'User not found'}, 404)

@@ -18,7 +18,7 @@ from flaskr.schemas.token import (AccessRefreshTokenRequestSchema,
 @doc(description='Token API', tags=['Token'])
 class TokenResource(MethodResource, Resource):
 
-    @use_kwargs(AccessRefreshTokenRequestSchema, location=('json'))
+    @use_kwargs(AccessRefreshTokenRequestSchema, location='json')
     @marshal_with(AccessRefreshTokenUidResponseSchema, code=201)
     @marshal_with(MessageSchema, code=401)
     @doc(description='Login and generate new access and refresh token')
@@ -35,18 +35,18 @@ class TokenResource(MethodResource, Resource):
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(user.id)
         return make_response({
-            "access_token": access_token, 
-            "refresh_token": refresh_token, 
-            "uid": user.id}, 201)
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "uid": user.id
+        }, 201)
 
-    @use_kwargs(
-    {
+    @use_kwargs({
         'Authorization':
         fields.Str(
             required=True,
             description='Bearer [access_token]'
         )
-    }, location=('headers'))
+    }, location='headers')
     @marshal_with(MessageSchema, code=201)
     @doc(description='Revoke current access token')
     @jwt_required()
@@ -56,17 +56,17 @@ class TokenResource(MethodResource, Resource):
         TokenBlocklistModel(jti=jti, created_at=now).save()
         return make_response({"message": "Access token revoked or expired"}, 201)
 
+
 @doc(description='Token refresher API', tags=['Token'])
 class TokenRefresherResource(MethodResource, Resource):
 
-    @use_kwargs(
-    {
+    @use_kwargs({
         'Authorization':
         fields.Str(
             required=True,
             description='Bearer [refresh_token]'
         )
-    }, location=('headers'))
+    }, location='headers')
     @marshal_with(AccessTokenResponseSchema, code=201)
     @doc(description='Refresh current access token')
     @jwt_required(refresh=True)

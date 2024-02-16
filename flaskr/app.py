@@ -1,5 +1,6 @@
 import os
 
+from dotenv import load_dotenv
 from flask import Flask
 
 from flaskr.db import config_sql_alchemy, db_instance
@@ -9,7 +10,6 @@ from flaskr.routes import config_app_routes
 from flaskr.schema import config_marshmallow
 from flaskr.security import config_app_cors, config_jwt_token
 from flaskr.swagger_docs import config_swagger
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -21,11 +21,13 @@ app.config['DEBUG'] = int(os.environ.get('FLASK_DEBUG', '0')) == 1
 # Config SQLAlchemy
 config_sql_alchemy(app)
 
+
 @app.cli.command('initdb')
 def initdb_command():
     """Initializes the database."""
     init_load_data()
     print('Initialized the database.')
+
 
 # Config Marshmallow
 config_marshmallow(app)
