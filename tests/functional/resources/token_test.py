@@ -27,4 +27,3 @@ class TestTokenResource(BaseTestCase):
 
     def tearDown(self):
         self.client.delete('/token', headers=self.default_headers)
-

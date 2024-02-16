@@ -50,7 +50,7 @@ class TokenResource(MethodResource, Resource):
     @marshal_with(MessageSchema, code=201)
     @doc(description='Revoke current access token')
     @jwt_required()
-    def delete(self, **kwargs):
+    def delete(self, **kwargs):  # pylint: disable=unused-argument
         jti = get_jwt()["jti"]
         now = datetime.now(timezone.utc)
         TokenBlocklistModel(jti=jti, created_at=now).save()
@@ -70,7 +70,7 @@ class TokenRefresherResource(MethodResource, Resource):
     @marshal_with(AccessTokenResponseSchema, code=201)
     @doc(description='Refresh current access token')
     @jwt_required(refresh=True)
-    def post(self, **kwargs):
+    def post(self, **kwargs):  # pylint: disable=unused-argument
         current_user = get_jwt_identity()
         new_token = create_access_token(identity=current_user, fresh=False)
         return make_response({"access_token": new_token}, 201)
