@@ -23,9 +23,9 @@ class UserRegisterResource(MethodResource, Resource):
             return make_response({"message": "Username already exists"}, 400)
 
         user = UserModel(**kwargs)
-        user.save()
-
-        return make_response(user_schema.dump(user), 201)
+        if user.save():
+            return make_response(user_schema.dump(user), 201)
+        return make_response({"message": "Fail registering new user"}, 400)
 
     @use_kwargs({
         'Authorization':
@@ -46,7 +46,7 @@ class UserRegisterResource(MethodResource, Resource):
         if not saved_user:
             return make_response({"message": "User ID not exists"}, 400)
 
-        saved_user.password = kwargs['password']
+        saved_user.set_password(kwargs['password'])
         saved_user.username = kwargs['username']
         saved_user.save()
 

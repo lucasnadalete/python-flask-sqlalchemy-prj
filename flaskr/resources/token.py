@@ -5,6 +5,7 @@ from flask_apispec import doc, marshal_with, use_kwargs
 from flask_apispec.views import MethodResource
 from flask_jwt_extended import (create_access_token, create_refresh_token,
                                 get_jwt, get_jwt_identity, jwt_required)
+from flask_login import login_user, logout_user
 from flask_restful import Resource
 from marshmallow import fields
 
@@ -26,11 +27,13 @@ class TokenResource(MethodResource, Resource):
         username = kwargs["username"]
         password = kwargs["password"]
         # Query your database for username and password
-        user = UserModel.query.filter_by(username=username, password=password).first()
-        if user is None:
+        user = UserModel.query.filter_by(username=username).first()
+        if not user or not user.verify_password(password):
             # the user was not found on the database
             return make_response({"message": "Invalid username or password"}, 401)
 
+        # set login user for Flask-Login
+        login_user(user)
         # create a new token with the user id inside
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(user.id)
@@ -52,6 +55,8 @@ class TokenResource(MethodResource, Resource):
     @jwt_required()
     def delete(self, **kwargs):  # pylint: disable=unused-argument
         jti = get_jwt()["jti"]
+        # remove login user for Flask-Login
+        logout_user()
         now = datetime.now(timezone.utc)
         TokenBlocklistModel(jti=jti, created_at=now).save()
         return make_response({"message": "Access token revoked or expired"}, 201)
