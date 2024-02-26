@@ -14,6 +14,7 @@ Flask-Migrate
 Flask-RESTful
 Flask-SQLAlchemy
 Flask-Testing
+Flask-Login
 isort
 Jinja2
 jsonschema
@@ -36,6 +37,8 @@ responses
 safety
 setuptools
 SQLAlchemy
+sqlalchemy-history
 urllib3
 Werkzeug
 wheel
+bcrypt

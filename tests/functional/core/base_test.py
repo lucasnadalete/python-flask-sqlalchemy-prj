@@ -17,11 +17,17 @@ class BaseTestCase(TestCase):
         return app
 
     def setUp(self):
+        from sqlalchemy import inspect
+
         from flaskr.db import db_instance
         from flaskr.init_db import init_load_data
 
+        engine = db_instance.get_engine()
+        inspector = inspect(engine)
+
         for tbl in reversed(db_instance.metadata.sorted_tables):
             print('##### Dropped Table - ' + tbl.name)
-            tbl.drop(bind=db_instance.engine)
+            if inspector.has_table(tbl.name):
+                tbl.drop(bind=engine)
         db_instance.create_all()
         init_load_data()

@@ -10,4 +10,4 @@ class HealthCheckerResource(MethodResource, Resource):
     @marshal_with({}, code=200)
     @doc(description='Verify if service is online')
     def get(self):
-        return make_response({}, 200)
+        return make_response({"message": "Service is up"}, 200)

@@ -24,8 +24,12 @@ attrs==23.2.0
     # via
     #   jsonschema
     #   referencing
+bcrypt==4.1.2
+    # via -r requirements.in
 blinker==1.7.0
     # via flask
+cached-property==1.5.2
+    # via sqlalchemy-history
 certifi==2023.11.17
     # via requests
 charset-normalizer==3.3.2
@@ -54,6 +58,7 @@ flask==3.0.0
     #   flask-apscheduler
     #   flask-cors
     #   flask-jwt-extended
+    #   flask-login
     #   flask-marshmallow
     #   flask-migrate
     #   flask-restful
@@ -66,6 +71,8 @@ flask-apscheduler==1.13.1
 flask-cors==4.0.0
     # via -r requirements.in
 flask-jwt-extended==4.6.0
+    # via -r requirements.in
+flask-login==0.6.3
     # via -r requirements.in
 flask-marshmallow==0.15.0
     # via -r requirements.in
@@ -208,6 +215,12 @@ sqlalchemy==2.0.25
     #   alembic
     #   flask-sqlalchemy
     #   marshmallow-sqlalchemy
+    #   sqlalchemy-history
+    #   sqlalchemy-utils
+sqlalchemy-history==2.1.4
+    # via -r requirements.in
+sqlalchemy-utils==0.41.1
+    # via sqlalchemy-history
 tomlkit==0.12.3
     # via pylint
 typing-extensions==4.9.0
@@ -228,6 +241,7 @@ werkzeug==3.0.1
     #   -r requirements.in
     #   flask
     #   flask-jwt-extended
+    #   flask-login
 wheel==0.42.0
     # via -r requirements.in
 
