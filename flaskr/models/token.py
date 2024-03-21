@@ -5,7 +5,7 @@ from sqlalchemy_history import make_versioned
 import flaskr.config_app as ca
 from flaskr.db import db_instance, db_persist
 
-make_versioned(user_cls='UserModel')
+make_versioned(user_cls='TokenBlocklistModel')
 
 
 class TokenBlocklistModel(db_instance.Model):
