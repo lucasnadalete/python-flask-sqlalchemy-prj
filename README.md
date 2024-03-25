@@ -209,6 +209,19 @@ Executing the unit and functional tests from root directory
 python -m pytest tests
 ```
 
+## Frontend Application in React
+
+In project root type the following commands:
+```
+cd frontend
+npm install # To install the frontend libs declared in package.json
+```
+
+To run the frontend app:
+```
+npm start
+```
+
 Executing **pytest** with coverage analysis to functional and unit tests
 ```bash
 python -m pytest --disable-warnings --cov-report term-missing --cov=flaskr tests
